@@ -30,5 +30,4 @@ public class ProjectController {
 	public @ResponseBody Iterable<Project> getAll() {
 		return projectRepository.findAll();
 	}
-	
 }
