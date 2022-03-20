@@ -1,9 +1,9 @@
 package com.projecttracker.model;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,52 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.projecttracker.model.constant.Priority;
+import com.projecttracker.model.constant.Status;
 
 @Entity
 @Table(name = "todo")
 public class Todo {
 	
-	public enum Priority {
-		
-		LOW {
-			public String toString() {
-				return "Low";
-			}
-		},
-		
-		MEDIUM {
-			public String toString() {
-				return "Medium";
-			}
-		},
-		
-		HIGH {
-			public String toString() {
-				return "Low";
-			}
-		}
-	}
-	
-	public enum Status {
-		ONTRACK {
-			public String toString() {
-				return "On Track";
-			}
-		},
-		
-		ATRISK {
-			public String toString() {
-				return "At Risk";
-			}
-		},
-		
-		OFFTRACK {
-			public String toString() {
-				return "Off Track";
-			}
-		}
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
@@ -69,14 +31,13 @@ public class Todo {
 	@Column(name = "assignee")
 	private String assignee;
 	
+	@JsonFormat(pattern="MM/dd/yyyy")
 	@Column(name = "due_date")
-	private String dueDate;
+	private Date dueDate;
 	
-	@Enumerated(EnumType.STRING)
 	@Column(name = "priority")
 	private Priority priority;
 	
-	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	private Status status;
 
@@ -107,5 +68,37 @@ public class Todo {
 
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
+	}
+	
+	public String getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
+	}
+
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public Priority getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Priority priority) {
+		this.priority = priority;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 }
