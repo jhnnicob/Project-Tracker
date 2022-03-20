@@ -2,6 +2,8 @@ package com.projecttracker.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,14 +16,69 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "todo")
 public class Todo {
+	
+	public enum Priority {
+		
+		LOW {
+			public String toString() {
+				return "Low";
+			}
+		},
+		
+		MEDIUM {
+			public String toString() {
+				return "Medium";
+			}
+		},
+		
+		HIGH {
+			public String toString() {
+				return "Low";
+			}
+		}
+	}
+	
+	public enum Status {
+		ONTRACK {
+			public String toString() {
+				return "On Track";
+			}
+		},
+		
+		ATRISK {
+			public String toString() {
+				return "At Risk";
+			}
+		},
+		
+		OFFTRACK {
+			public String toString() {
+				return "Off Track";
+			}
+		}
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "task_name")
+	private String taskName;
+	
+	@Column(name = "assignee")
+	private String assignee;
+	
+	@Column(name = "due_date")
+	private String dueDate;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "priority")
+	private Priority priority;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status")
+	private Status status;
 
 	public Long getId() {
 		return id;
@@ -44,12 +101,11 @@ public class Todo {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTaskName() {
+		return taskName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
-
 }
