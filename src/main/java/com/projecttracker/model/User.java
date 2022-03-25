@@ -27,6 +27,16 @@ public class User {
 	@Column(name="email")
 	private String email;
 	
+	private String token;
+	
+	public User() {super();}
+	
+	public User(String username, String password) {
+		super();
+		this.setUsername(username);
+		this.setPassword(password);
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -43,6 +53,14 @@ public class User {
 		this.username = username;
 	}
 	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -58,5 +76,4 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
 }
