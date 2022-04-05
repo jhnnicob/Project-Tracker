@@ -45,6 +45,7 @@ public class ProjectController {
 		try {
 			Object data = projectRepository.findAll();
 			restResult.setData(data);
+			restResult.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			restResult.setMessage(e.getMessage());
@@ -55,10 +56,11 @@ public class ProjectController {
 	
 	@DeleteMapping("/delete/{id}")
 	public @ResponseBody RestResult deleteProject(@PathVariable Long id) {
-		RestResult restResult = RestResult.negativeInstance();
+		RestResult restResult = new RestResult();
 		try {
 			projectRepository.deleteById(id);
 			restResult.setSuccess(true);
+			restResult.setMessage("Delete project # " + id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			restResult.setMessage(e.getMessage());
