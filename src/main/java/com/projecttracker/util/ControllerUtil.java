@@ -8,18 +8,18 @@ import org.springframework.stereotype.Component;
 
 import com.projecttracker.exception.ServiceException;
 import com.projecttracker.model.User;
-import com.projecttracker.repository.UserRepository;
+import com.projecttracker.service.UserService;
 
 @Component
 public class ControllerUtil {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	public User getLoginUser() throws ServiceException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		
-		return userRepository.findUserByUsername(userDetails.getUsername());
+		return userService.findUserByUsername(userDetails.getUsername());
 	}
 }
