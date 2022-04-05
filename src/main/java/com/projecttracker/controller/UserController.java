@@ -22,7 +22,7 @@ import com.projecttracker.security.JwtUtils;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/user")
 public class UserController extends BaseRestController{
-
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -34,7 +34,7 @@ public class UserController extends BaseRestController{
 	
 	@PostMapping("auth/signin")
 	public @ResponseBody String add(@RequestBody User user) {
-		userRepository.save(user);
+		controllerUtil.save(user);
 		return "Save";
 	}
 	
@@ -57,7 +57,7 @@ public class UserController extends BaseRestController{
 		
 		User loginUser;
 		try {
-			loginUser = userRepository.findUserByUsername(user.getUsername());
+			loginUser = controllerUtil.getLoginUser();
 			loginUser.setToken(jws);
 			res.setData(loginUser);
 		} catch (Exception e) {
