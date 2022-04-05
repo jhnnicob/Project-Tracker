@@ -21,7 +21,7 @@ import com.projecttracker.security.JwtUtils;
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/user")
-public class UserController {
+public class UserController extends BaseRestController{
 
 	@Autowired
 	private UserRepository userRepository;
