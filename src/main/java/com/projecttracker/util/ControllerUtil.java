@@ -20,6 +20,6 @@ public class ControllerUtil {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		
-		return userService.findUserByUsername(userDetails.getUsername());
+		return userService.findByUsername(userDetails.getUsername());
 	}
 }
