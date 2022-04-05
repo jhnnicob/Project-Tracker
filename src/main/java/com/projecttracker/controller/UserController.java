@@ -17,6 +17,7 @@ import com.projecttracker.model.RestResult;
 import com.projecttracker.model.User;
 import com.projecttracker.repository.UserRepository;
 import com.projecttracker.security.JwtUtils;
+import com.projecttracker.util.ExceptionUtil;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -32,19 +33,34 @@ public class UserController extends BaseRestController{
 	@Autowired
 	private JwtUtils jwtUtils;
 	
-	@PostMapping("auth/signin")
-	public @ResponseBody String add(@RequestBody User user) {
-		userRepository.save(user);
-		return "Save";
+	@PostMapping("/auth/signup")
+	public @ResponseBody RestResult add(@RequestBody User user) {
+		RestResult restResult = new RestResult();
+		try {
+			userRepository.save(user);
+			restResult.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			restResult.setData("Somthing went wrong");
+		}
+		return restResult;
 	}
 	
-	@GetMapping("all")
-	public @ResponseBody Iterable<User> getAll() {
-		return userRepository.findAll();
+	@GetMapping("/all")
+	public @ResponseBody RestResult getAll() {
+		RestResult restResult = RestResult.negativeInstance();
+		try {
+			restResult.setData(userRepository.findAll());
+			restResult.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			restResult.setMessage(e.getMessage());
+			restResult.setStackTrace(ExceptionUtil.toString(e));
+		}
+		return restResult;
 	}
 	
-	@PostMapping("auth/login")
-	
+	@PostMapping("/auth/login")
 	public @ResponseBody RestResult login(@RequestBody User user) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -52,19 +68,18 @@ public class UserController extends BaseRestController{
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jws = jwtUtils.generateJwtToken(authentication);
 		
-		RestResult res = new RestResult();
-		res.setSuccess(true);
+		RestResult restResult = new RestResult();
+		restResult.setSuccess(true);
 		
 		User loginUser;
 		try {
 			loginUser = controllerUtil.getLoginUser();
 			loginUser.setToken(jws);
-			res.setData(loginUser);
+			restResult.setData(loginUser);
 		} catch (Exception e) {
 			e.printStackTrace();
-			res.setData(jws);
+			restResult.setData(jws);
 		}
-
-		return res;
+		return restResult;
 	}
 }

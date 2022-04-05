@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.projecttracker.model.Project;
+import com.projecttracker.model.RestResult;
 import com.projecttracker.repository.ProjectRepository;
+import com.projecttracker.util.ExceptionUtil;
 
 @Controller
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -21,13 +23,31 @@ public class ProjectController {
 	private ProjectRepository projectRepository;
 	
 	@PostMapping("add")
-	public @ResponseBody String add(@RequestBody Project project) {
-		projectRepository.save(project);
-		return "Save";
+	public @ResponseBody RestResult add(@RequestBody Project project) {
+		RestResult restResult = new RestResult();
+		try {
+			Object data = projectRepository.save(project);
+			restResult.setData(data);
+			restResult.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			restResult.setMessage(e.getMessage());
+			restResult.setStackTrace(ExceptionUtil.toString(e));
+		}
+		return restResult;
 	}
 	
 	@GetMapping("all")
-	public @ResponseBody Iterable<Project> getAll() {
-		return projectRepository.findAll();
+	public @ResponseBody RestResult getAll() {
+		RestResult restResult = RestResult.negativeInstance();
+		try {
+			Object data = projectRepository.findAll();
+			restResult.setData(data);
+		} catch (Exception e) {
+			e.printStackTrace();
+			restResult.setMessage(e.getMessage());
+			restResult.setStackTrace(ExceptionUtil.toString(e));
+		}
+		return restResult;
 	}
 }
