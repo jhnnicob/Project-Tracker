@@ -34,7 +34,7 @@ public class UserController extends BaseRestController{
 	
 	@PostMapping("auth/signin")
 	public @ResponseBody String add(@RequestBody User user) {
-		controllerUtil.save(user);
+		userRepository.save(user);
 		return "Save";
 	}
 	
