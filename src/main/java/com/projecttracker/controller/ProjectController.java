@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,6 +62,20 @@ public class ProjectController {
 			projectRepository.deleteById(id);
 			restResult.setSuccess(true);
 			restResult.setMessage("Delete project # " + id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			restResult.setMessage(e.getMessage());
+			restResult.setStackTrace(ExceptionUtil.toString(e));
+		}
+		return restResult;
+	}
+	
+	@PutMapping("/update")
+	public @ResponseBody RestResult updateProject(@RequestBody Project project) {
+		RestResult restResult = RestResult.negativeInstance();
+		try {
+			projectRepository.save(project);
+			restResult.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			restResult.setMessage(e.getMessage());
