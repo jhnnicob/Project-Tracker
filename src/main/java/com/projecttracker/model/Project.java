@@ -27,7 +27,10 @@ public class Project {
 	@Column(name="name")
 	private String name;
 	
-	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "project", 
+			cascade = CascadeType.ALL, 
+			fetch = FetchType.EAGER, 
+			orphanRemoval = true)
 	@JsonManagedReference
 	private List<Todo> todoList = new ArrayList<Todo>();
 	
